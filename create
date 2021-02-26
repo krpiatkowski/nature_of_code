@@ -2,3 +2,4 @@
 cp -R template $1
 cd $1
 npm install
+npm run start-run
