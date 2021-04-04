@@ -1,0 +1,9 @@
+{
+  "name": "template",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "../../node_modules/.bin/run-p start-compile start-run",
+    "start-compile": "../../node_modules/.bin/tsc --watch",
+    "start-run": "../../node_modules/.bin/browser-sync start --server -w"
+  }
+}
