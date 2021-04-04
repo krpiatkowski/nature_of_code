@@ -1,6 +1,6 @@
 #!/bin/bash
-cp -R template $1
+mkdir -p $1
+cp -R template/* $1
 cd $1
 code .
-npm install
 npm run start
