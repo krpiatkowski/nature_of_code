@@ -1,32 +1,55 @@
-let currentVector: Vector;
-let addVector: Vector;
+let v: Vector3D;
+let addVector: Vector3D;
+
+const CANVAS_SIZE = 1000;
+const BOX_SIZE = 200;
+const SPHERE_SIZE = 10;
+const HALF_SPHERE_SIZE = SPHERE_SIZE / 2;
 
 function setup() {
-  currentVector = new Vector(0, 0);
-  addVector = new Vector(5, 5);
-  // FULLSCREEN CANVAS
-  createCanvas(windowWidth, windowHeight);
-
-  // SETUP SOME OPTIONS
-  rectMode(CENTER).noFill().frameRate(60);
+  v = new Vector3D(0, 0, 0);
+  addVector = new Vector3D(1, 1, 2);
+  createCanvas(CANVAS_SIZE, CANVAS_SIZE, WEBGL);
 }
 
 function draw() {
   background(255);
 
-  if (currentVector.x > windowWidth || currentVector.x < 0) {
-    addVector = new Vector(-addVector.x, addVector.y);
+  rotateY(mouseY * 0.001);
+  rotateZ(mouseX * 0.001);
+
+  let newV = v.add(addVector);
+
+  if (
+    !(
+      -BOX_SIZE + HALF_SPHERE_SIZE < newV.x &&
+      newV.x < BOX_SIZE - HALF_SPHERE_SIZE
+    )
+  ) {
+    addVector = new Vector3D(-addVector.x, addVector.y, addVector.z);
   }
-  if (currentVector.y > windowHeight || currentVector.y < 0) {
-    addVector = new Vector(addVector.x, -addVector.y);
+  if (
+    !(
+      -BOX_SIZE + HALF_SPHERE_SIZE < newV.y &&
+      newV.y < BOX_SIZE - HALF_SPHERE_SIZE
+    )
+  ) {
+    addVector = new Vector3D(addVector.x, -addVector.y, addVector.z);
+  }
+  if (
+    !(
+      -BOX_SIZE + HALF_SPHERE_SIZE < newV.z &&
+      newV.z < BOX_SIZE - HALF_SPHERE_SIZE
+    )
+  ) {
+    addVector = new Vector3D(addVector.x, addVector.y, -addVector.z);
   }
 
-  currentVector = currentVector.add(addVector);
-  stroke(0);
-  fill(175);
-  ellipse(currentVector.x, currentVector.y, 32, 32);
-}
+  v = v.add(addVector);
 
-function windowResized() {
-  resizeCanvas(windowWidth, windowHeight);
+  noFill();
+  box(BOX_SIZE * 2);
+
+  translate(v.x, v.y, v.z);
+  sphere(SPHERE_SIZE);
 }
